@@ -48,9 +48,6 @@ O projeto é construído utilizando arquitetura de microsserviços com Java + Sp
 | simulador | `simulador.html` | simulador |
 ##  Passos para Implementação Completa
 
-##  Passos para Implementação Completa
-
-
 ### 1. Configuração do Ambiente
 ```bash
 # Clonar repositório
