@@ -1,4 +1,4 @@
-package com.a3bradesco.pix_simulador_backend.modelo;
+package com.a3bradesco.model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;

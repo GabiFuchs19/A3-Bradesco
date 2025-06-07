@@ -1,6 +1,6 @@
-package com.a3bradesco.pix_simulador_backend.repositorio;
+package com.a3bradesco.repository;
 
-import com.a3bradesco.pix_simulador_backend.modelo.Transacao;
+import com.a3bradesco.model.Transacao;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.Optional;
 

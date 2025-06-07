@@ -1,6 +1,6 @@
-package com.a3bradesco.pix_simulador_backend.controle;
-import com.a3bradesco.pix_simulador_backend.modelo.Transacao;
-import com.a3bradesco.pix_simulador_backend.servico.TrancacaoServico;
+package com.a3bradesco.controller;
+import com.a3bradesco.model.Transacao;
+import com.a3bradesco.service.TrancacaoServico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.Optional;

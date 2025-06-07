@@ -1,6 +1,6 @@
-package com.a3bradesco.pix_simulador_backend.servico;
-import com.a3bradesco.pix_simulador_backend.modelo.Transacao;
-import com.a3bradesco.pix_simulador_backend.repositorio.TransacaoaRepositorio;
+package com.a3bradesco.service;
+import com.a3bradesco.model.Transacao;
+import com.a3bradesco.repository.TransacaoaRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
