@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Bradesco - Simulador de Golpes</title>
+  <title>Bradesco - Simulador de Transação Pix</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
   <style>
     body {
       margin: 0;
@@ -71,6 +73,15 @@
       border-radius: 6px;
       display: none;
     }
+    .success {
+      background-color: #e0ffe5;
+      border: 1px solid #b3ffcc;
+      color: #007a33;
+      padding: 12px;
+      margin-top: 20px;
+      border-radius: 6px;
+      display: none;
+    }
     .transfer-button {
       width: 100%;
       margin-top: 20px;
@@ -94,7 +105,7 @@
   </style>
 </head>
 <body>
-  <header>Simulador de Golpe</header>
+  <header>Simulador de Transação Pix</header>
   <nav class="navbar">
     <a href="#">Início</a>
     <a href="#">Pix</a>
@@ -130,17 +141,8 @@
     <label for="valor">Valor</label>
     <input type="text" id="valor" placeholder="R$ 0,00">
 
-    <div id="alerta" class="alert">
-      <strong>⚠️ Conta suspeita de fraude!</strong><br>
-      Você está prestes a cair em um golpe. Cancele a operação imediatamente.
-    </div>
-
-<!-- NOVA MENSAGEM DE SUCESSO -->
-<div id="sucesso" class="alert" style="background-color: #e0ffe5; border-color: #b3ffcc; color: #007a33; display: none;">
-  <strong>✅ Transferência simulada com sucesso!</strong><br>
-  O valor foi enviado com segurança.
-</div>
-
+    <div id="alerta" class="alert"></div>
+    <div id="sucesso" class="success"></div>
 
     <button class="transfer-button" onclick="verificarTransferencia()">Transferir</button>
   </div>
@@ -151,46 +153,76 @@
 
   <script>
     const campoValor = document.getElementById("valor");
-
     campoValor.addEventListener("input", () => {
       let valor = campoValor.value.replace(/\D/g, "");
       valor = (parseInt(valor || "0") / 100).toFixed(2);
       campoValor.value = `R$ ${valor.replace('.', ',')}`;
     });
 
-    function verificarTransferencia() {
+   async function verificarTransferencia() {
   const chave = document.getElementById("chave").value.trim().toLowerCase();
-  const nome = document.getElementById("nome").value.trim().toLowerCase();
-  const instituicao = document.getElementById("instituicao").value.trim().toLowerCase();
-  const valor = document.getElementById("valor").value.trim();
+  const nome = document.getElementById("nome").value.trim();
+  const instituicao = document.getElementById("instituicao").value.trim();
+  const valorStr = document.getElementById("valor").value.trim();
   const alerta = document.getElementById("alerta");
   const sucesso = document.getElementById("sucesso");
 
-  const campos = [chave, nome, instituicao];
-  const chavesSuspeitas = [
-    "12345678900", "golpista@email.com", "999999999", "abcd-1234"
-  ];
-  const contemPalavraGolpe = campos.some(campo => campo.includes("golpe"));
-
-  // Esconde mensagens antigas
   alerta.style.display = "none";
   sucesso.style.display = "none";
 
-  if (!chave || !nome || !instituicao || !valor || valor === "R$ 0,00") {
+  if (!chave || !nome || !instituicao || !valorStr || valorStr === "R$ 0,00") {
     alerta.innerHTML = "<strong>❌ Preencha todos os campos corretamente.</strong>";
     alerta.style.display = "block";
     return;
   }
 
-  if (contemPalavraGolpe || chavesSuspeitas.includes(chave)) {
-    alerta.innerHTML = "<strong>⚠️ Conta suspeita de fraude!</strong><br>Você está prestes a cair em um golpe. Cancele a operação imediatamente.";
-    alerta.style.display = "block";
-  } else {
+  const valorNumerico = parseFloat(valorStr.replace("R$ ", "").replace(",", "."));
+  const dadosConcat = `${chave}|${nome}|${instituicao}|${valorStr}`;
+  const hash = CryptoJS.SHA256(dadosConcat).toString();
+
+  const dados = {
+    chavePix: chave,
+    nome: nome,
+    instituicao: instituicao,
+    valor: valorNumerico,
+    blockchainHash: hash  // CORRETO
+  };
+
+  try {
+    const response = await fetch("http://localhost:8080/api/transacoes/simular", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dados)
+    });
+
+    if (!response.ok) throw new Error("Erro ao registrar transação.");
+
+    sucesso.innerHTML = `
+      <strong>✅ Transferência simulada com sucesso!</strong><br>
+      Hash da transação: <code>${hash}</code>
+    `;
     sucesso.style.display = "block";
+
+    gerarPDF(nome, valorNumerico, hash);
+  } catch (e) {
+    alerta.innerHTML = `<strong>❌ Erro:</strong> ${e.message}`;
+    alerta.style.display = "block";
   }
 }
 
 
+    function gerarPDF(nome, valor, hash) {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      doc.text("Comprovante de Transação Pix", 20, 20);
+      doc.text(`Nome: ${nome}`, 20, 40);
+      doc.text(`Valor: R$ ${valor.toFixed(2).replace('.', ',')}`, 20, 50);
+      doc.text(`Hash: ${hash}`, 20, 60);
+      doc.text(`Data/Hora: ${new Date().toLocaleString()}`, 20, 70);
+
+      doc.save("comprovante_pix.pdf");
+    }
   </script>
 </body>
 </html>

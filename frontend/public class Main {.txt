@@ -1,0 +1,89 @@
+public class Main {
+    import java.util.ArrayList;
+
+public class Contas {
+
+    private String nome;
+    private String cpf;
+    private double saldo;
+    private double limite;
+    private ArrayList<String> extrato;
+
+    public Contas(String nome, String cpf, double saldo, double limite) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.saldo = saldo;
+        this.limite = limite;
+        this.extrato = new ArrayList();
+    }
+
+    public void setnome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getnome() {
+        return nome;
+    }
+
+    public void setcpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getcpf() {
+        return cpf;
+    }
+
+    public void setsaldo(double saldo) {
+        this.saldo = saldo;
+    }
+
+    public double getsaldo() {
+        return saldo;
+    }
+
+    public void setlimite(double limite) {
+        this.limite = limite;
+    }
+
+    public double getlimite() {
+        return limite;
+    }
+
+    public void deposito(double deposito) {
+        this.saldo = this.saldo + deposito;
+        this.extrato.add("deposito de " + deposito + " reais");
+    }
+
+    public boolean saque(double saque) {
+        if (this.saldo >= saque) {
+            saldo = saldo - saque;
+            this.extrato.add("saque de " + saque + " reais");
+            return true;
+        } else {
+            this.extrato.add("tentativa de saque de " + saque + " reais. saldo insuficiente");
+            return false;
+        }
+    }
+
+    public boolean transferencia(double valor, Contas conta) {
+        if (this.saldo >= valor) {
+            System.out.println("transferindo " + valor + " para " + conta.getnome() + " (conta2)");
+            this.saldo = this.saldo - valor;
+            conta.deposito(valor);
+            this.extrato.add("transferencia de " + valor + " para " + conta.getnome() + " saldo atual " + this.getsaldo());
+            return true;
+        } else {
+            this.extrato.add("tentativa de transferencia de " + valor + " para " + conta.getnome() + " falhou saldo insuficiente");
+            return false;
+        }
+
+    }
+
+    public void ExibirExtrato() {
+        System.out.println("extrato de "+this.getnome()+": ");
+        for(String operacao : extrato){
+            System.out.println(operacao);
+        }
+    }
+}
+}
