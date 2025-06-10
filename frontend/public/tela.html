@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Verificador de Comprovantes</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f0f0f0; }
+    .container { background: white; padding: 20px; border-radius: 10px; max-width: 500px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    input { width: 100%; padding: 10px; margin-top: 10px; border: 1px solid #ccc; border-radius: 4px; }
+    button { margin-top: 20px; padding: 10px; background: #c8102e; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .resultado { margin-top: 20px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Verificar Comprovante</h2>
+    <label>Hash do Comprovante:</label>
+    <input type="text" id="hash" placeholder="Cole o hash aqui">
+    <button onclick="verificar()">Verificar</button>
+    <div id="resultado" class="resultado"></div>
+  </div>
+
+  <script>
+    function verificar() {
+      const hash = document.getElementById("hash").value.trim();
+
+      fetch(`http://localhost:8080/api/transacoes/${hash}`)
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById("resultado").innerText = data.valido
+            ? "✅ Comprovante válido e registrado na blockchain."
+            : "❌ Comprovante não encontrado.";
+        }).catch(() => {
+          document.getElementById("resultado").innerText = "Erro ao verificar comprovante.";
+        });
+    }
+  </script>
+</body>
+</html>
+

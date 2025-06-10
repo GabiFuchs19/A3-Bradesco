@@ -1,4 +1,4 @@
-package com.a3bradesco.repository;
+package main.java.com.a3bradesco.repository;
 
 import com.a3bradesco.model.Transacao;
 import org.springframework.data.mongodb.repository.MongoRepository;
