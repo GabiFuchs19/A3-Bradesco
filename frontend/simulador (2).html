@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Simulador Pix</title>
+</head>
+<body>
+    <h1>Simulador de Transação Pix</h1>
+    <label>Chave Pix: <input id="chavePix" type="text"></label><br>
+    <label>Nome: <input id="nome" type="text"></label><br>
+    <label>Valor: <input id="valor" type="number" step="0.01"></label><br>
+    <button onclick="enviarTransacao()">Simular</button>
+
+    <script>
+    async function enviarTransacao() {
+        const dados = {
+            chavePix: document.getElementById('chavePix').value,
+            valor: parseFloat(document.getElementById('valor').value),
+            nome: document.getElementById('nome').value,
+        };
+
+        const resposta = await fetch('http://localhost:8080/transacoes/simular', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dados)
+        });
+
+        const resultado = await resposta.json();
+        alert("Transação registrada!\nScore: " + resultado.score.toFixed(2) + "\nHash: " + resultado.blockchainHash);
+    }
+    </script>
+</body>
+</html>
