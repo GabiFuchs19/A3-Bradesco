@@ -1,23 +1,25 @@
-# Use imagem oficial do OpenJDK 21
-FROM openjdk:21-jdk-slim
+# Etapa 1: build da aplicação com Maven
+FROM maven:3.9.4-eclipse-temurin-21 as builder
 
-# Diretório de trabalho no container
 WORKDIR /app
 
-# Copia o pom.xml e baixa as dependências primeiro (cache eficiente)
+# Copia os arquivos necessários
 COPY pom.xml .
-
-RUN apt-get update && apt-get install -y maven && rm -rf /var/lib/apt/lists/*
-RUN mvn dependency:go-offline
-
-# Copia o código fonte
 COPY src ./src
 
 # Empacota a aplicação
 RUN mvn clean package -DskipTests
 
-# Exponha a porta 8080
+# Etapa 2: imagem final apenas com o jar
+FROM openjdk:21-jdk-slim
+
+WORKDIR /app
+
+# Copia o jar gerado na etapa anterior
+COPY --from=builder /app/target/*.jar app.jar
+
+# Exponha a porta
 EXPOSE 8080
 
-# Comando para rodar o jar gerado
-CMD ["java", "-jar", "target/backend-1.0-SNAPSHOT.jar"]
+# Executa a aplicação
+CMD ["java", "-jar", "app.jar"]
