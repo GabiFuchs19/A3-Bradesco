@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: backend
+    env: docker
+    dockerfilePath: backend/Dockerfile
+    rootDir: backend
+    plan: free
+    envVars:
+      - key: SPRING_DATA_MONGODB_URI
+        value: ${MONGODB_URI} # ou sua string de conexão
