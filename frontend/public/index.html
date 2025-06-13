@@ -1,233 +1,106 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Bradesco - Simulador de Transação Pix</title>
-
-  <!-- Bibliotecas -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/5.0.8/inputmask.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/cleave.js@1/dist/cleave.min.js"></script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bradesco App - Home</title>
   <style>
-    body { margin: 0; font-family: Arial, sans-serif; background-color: #f8f8f8; }
-    header { background-color: #c8102e; color: white; padding: 16px; text-align: center; font-size: 1.5em; font-weight: bold; }
-    .navbar { display: flex; justify-content: space-around; background-color: #e6e6e6; padding: 10px; }
-    .navbar a { text-decoration: none; color: #333; font-weight: bold; }
-    .container { max-width: 500px; background: white; margin: 30px auto; padding: 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
-    .logo { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
-    .logo img { width: 40px; }
-    .logo span { font-size: 1.8em; font-weight: bold; }
-    label { display: block; margin-top: 12px; font-weight: bold; }
-    input, select { width: 100%; padding: 10px; margin-top: 4px; border: 1px solid #ccc; border-radius: 4px; }
-    .alert, .success { padding: 12px; margin-top: 20px; border-radius: 6px; display: none; }
-    .alert { background-color: #ffe5e5; border: 1px solid #ffcccc; color: #b20000; }
-    .success { background-color: #e0ffe5; border: 1px solid #b3ffcc; color: #007a33; }
-    .transfer-button { width: 100%; margin-top: 20px; background-color: #c8102e; color: white; padding: 12px; font-size: 1em; border: none; border-radius: 6px; cursor: pointer; }
-    .transfer-button:hover { background-color: #a10e25; }
-    .footer { text-align: center; font-size: 0.9em; color: #888; padding: 20px; }
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .phone-frame {
+      width: 360px;
+      height: 640px;
+      background-color: white;
+      border-radius: 30px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background-color: #c8102e;
+      color: white;
+      padding: 16px;
+      text-align: center;
+      font-size: 1.4em;
+      font-weight: bold;
+    }
+
+    .menu {
+      flex: 1;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .menu button {
+      padding: 14px;
+      font-size: 1em;
+      background-color: #c8102e;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .menu button:hover {
+      background-color: #a10e25;
+    }
+
+    .menu button:active {
+      background-color: #87001e;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 0.8em;
+      padding: 10px;
+      color: #999;
+    }
+
+    .logo {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .logo img {
+      width: 60px;
+    }
   </style>
 </head>
 <body>
-  <header>Simulador de Transação Pix</header>
-  <nav class="navbar">
-    <a href="#">Início</a>
-    <a href="#">Pix</a>
-    <a href="#">Extrato</a>
-    <a href="#">Ajuda</a>
-  </nav>
+  <div class="phone-frame">
+    <header>Bradesco</header>
 
-  <div class="container">
-    <div class="logo">
-      <img src="https://th.bing.com/th/id/R.8dde52111aea7298f4406217f7f81f24?rik=hhpIhV68d%2bUesA&pid=ImgRaw&r=0" alt="Logo genérica">
-      <span>bradesco</span>
+    <div class="menu">
+      <div class="logo">
+        <img src="https://th.bing.com/th/id/R.8dde52111aea7298f4406217f7f81f24?rik=hhpIhV68d%2bUesA&pid=ImgRaw&r=0" alt="Logo">
+      </div>
+
+      <button onclick="location.href='simulador.html'">📤 Simular Pix</button>
+      <button onclick="location.href='verificador.html'">🔍 Verificar Comprovante</button>
+      <button onclick="alert('Em breve: consultar saldo!')">💰 Saldo</button>
+      <button onclick="alert('Em breve: extrato de transações!')">📄 Extrato</button>
+      <button onclick="alert('Em breve: configurações de conta!')">⚙️ Configurações</button>
     </div>
 
-    <h2>Transferência via Pix</h2>
-
-    <label for="tipo-chave">Tipo de chave</label>
-    <select id="tipo-chave">
-      <option>CPF</option>
-      <option>E-mail</option>
-      <option>Telefone</option>
-      <option>Chave aleatória</option>
-    </select>
-
-    <label for="chave">Chave</label>
-    <input type="text" id="chave" placeholder="Digite a chave Pix">
-
-    <label for="nome">Nome</label>
-    <input type="text" id="nome" placeholder="Nome do destinatário">
-
-    <label for="instituicao">Instituição</label>
-    <input type="text" id="instituicao" placeholder="Nome do banco">
-
-    <label for="valor">Valor</label>
-    <input type="text" id="valor" placeholder="R$ 0,00">
-
-    <div id="alerta" class="alert"></div>
-    <div id="sucesso" class="success"></div>
-
-    <button class="transfer-button" onclick="verificarTransferencia()">Transferir</button>
+    <div class="footer">Versão educacional - Projeto A3 Bradesco</div>
   </div>
-
-  <div class="footer">
-    Este é um simulador educacional. Nenhuma transação real é realizada.
-  </div>
-
-  <script>
-    const tipoChave = document.getElementById("tipo-chave");
-    const campoChave = document.getElementById("chave");
-    const campoValor = document.getElementById("valor");
-
-    new Cleave('#valor', {
-      numeral: true,
-      numeralThousandsGroupStyle: 'thousand',
-      prefix: 'R$ ',
-      delimiter: '.',
-      numeralDecimalMark: ',',
-    });
-
-    tipoChave.addEventListener("change", () => {
-      campoChave.value = "";
-      campoChave.readOnly = false;
-      Inputmask.remove(campoChave);
-
-      switch (tipoChave.value) {
-        case "CPF":
-          campoChave.placeholder = "Digite o CPF (apenas números)";
-          break;
-        case "Telefone":
-          Inputmask({"mask": "(99) 99999-9999"}).mask(campoChave);
-          break;
-        case "E-mail":
-          campoChave.placeholder = "exemplo@email.com";
-          break;
-        case "Chave aleatória":
-          campoChave.value = crypto.randomUUID();
-          campoChave.readOnly = true;
-          break;
-      }
-    });
-
-    tipoChave.dispatchEvent(new Event("change"));
-
-    async function verificarTransferencia() {
-      const chave = campoChave.value.trim();
-      const nome = document.getElementById("nome").value.trim();
-      const instituicao = document.getElementById("instituicao").value.trim();
-      const valorStr = campoValor.value.trim();
-      const alerta = document.getElementById("alerta");
-      const sucesso = document.getElementById("sucesso");
-
-      alerta.style.display = "none";
-      sucesso.style.display = "none";
-
-      const tipo = tipoChave.value;
-
-      if (!chave || !nome || !instituicao || !valorStr || valorStr === "R$ 0,00") {
-        exibirErro("❌ Preencha todos os campos corretamente.");
-        return;
-      }
-
-      // Validações específicas
-      if (tipo === "CPF" && !/^\d{11}$/.test(chave)) {
-        exibirErro("❌ CPF inválido. Digite apenas 11 números.");
-        return;
-      }
-
-      if (tipo === "Telefone" && !/^\(\d{2}\) \d{5}-\d{4}$/.test(chave)) {
-        exibirErro("❌ Telefone inválido. Use o formato (XX) XXXXX-XXXX.");
-        return;
-      }
-
-      if (tipo === "E-mail" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(chave)) {
-        exibirErro("❌ E-mail inválido.");
-        return;
-      }
-
-      if (/\d/.test(nome)) {
-        exibirErro("❌ O nome não pode conter números.");
-        return;
-      }
-
-      if (/\d/.test(instituicao)) {
-        exibirErro("❌ O nome da instituição não pode conter números.");
-        return;
-      }
-
-      const valorNumerico = parseFloat(valorStr.replace("R$ ", "").replace(/\./g, "").replace(",", "."));
-      const dadosConcat = `${chave}|${nome}|${instituicao}|${valorStr}`;
-      const hash = CryptoJS.SHA256(dadosConcat).toString();
-
-      const dados = {
-        chavePix: chave,
-        nome: nome,
-        instituicao: instituicao,
-        valor: valorNumerico,
-        blockchainHash: hash
-      };
-
-      try {
-        const response = await fetch("http://localhost:8080/api/transacoes/simular", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(dados)
-        });
-
-        if (!response.ok) throw new Error("Erro ao registrar transação.");
-
-        sucesso.innerHTML = `
-          <strong>✅ Transferência simulada com sucesso!</strong><br>
-          Hash da transação: <code>${hash}</code>
-        `;
-        sucesso.style.display = "block";
-
-        gerarPDF(nome, valorNumerico, hash);
-      } catch (e) {
-        exibirErro(`❌ Erro: ${e.message}`);
-      }
-    }
-
-    function exibirErro(msg) {
-      const alerta = document.getElementById("alerta");
-      alerta.innerHTML = `<strong>${msg}</strong>`;
-      alerta.style.display = "block";
-    }
-
-    function gerarPDF(nome, valor, hash) {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-
-      doc.setFontSize(16);
-      doc.setTextColor(200, 16, 46);
-      doc.text("Bradesco", 20, 20);
-
-      doc.setFontSize(14);
-      doc.setTextColor(0, 0, 0);
-      doc.text("Comprovante de Transação Pix", 20, 35);
-
-      doc.setDrawColor(0);
-      doc.rect(15, 40, 180, 80);
-
-      doc.setFontSize(12);
-      let y = 50;
-      doc.text(`Nome do destinatário: ${nome}`, 20, y); y += 10;
-      doc.text(`Valor da transação: R$ ${valor.toFixed(2).replace('.', ',')}`, 20, y); y += 10;
-      doc.text(`Hash da transação:`, 20, y);
-      doc.setFontSize(10);
-      doc.text(`${hash}`, 20, y + 10); y += 20;
-      doc.setFontSize(12);
-      doc.text(`Data e hora: ${new Date().toLocaleString()}`, 20, y);
-
-      doc.setFontSize(10);
-      doc.setTextColor(150);
-      doc.text("Este é um comprovante gerado para fins educacionais.", 20, 130);
-
-      doc.save("comprovante_pix.pdf");
-    }
-  </script>
 </body>
 </html>
