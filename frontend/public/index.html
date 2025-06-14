@@ -1,106 +1,231 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bradesco App - Home</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bradesco - Home</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     * {
       box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
     }
 
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f5f5f5;
+      background-color: #ccc;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
     }
 
-    .phone-frame {
-      width: 360px;
-      height: 640px;
-      background-color: white;
+    .phone {
+      width: 375px;
+      height: 812px;
+      background-color: #fff;
       border-radius: 30px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
       overflow: hidden;
       display: flex;
       flex-direction: column;
+      justify-content: space-between;
     }
 
     header {
-      background-color: #c8102e;
+      background: linear-gradient(to right, #c8102e, #a10e25);
       color: white;
       padding: 16px;
-      text-align: center;
-      font-size: 1.4em;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .saldo {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
       font-weight: bold;
     }
 
-    .menu {
-      flex: 1;
-      padding: 20px;
+    .search-box {
+      margin: 10px;
       display: flex;
-      flex-direction: column;
-      gap: 16px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 4px rgba(0,0,0,0.1);
     }
 
-    .menu button {
-      padding: 14px;
-      font-size: 1em;
-      background-color: #c8102e;
+    .search-box input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      outline: none;
+    }
+
+    .search-box button {
+      background-color: #d50032;
       color: white;
       border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-
-    .menu button:hover {
-      background-color: #a10e25;
-    }
-
-    .menu button:active {
-      background-color: #87001e;
-    }
-
-    .footer {
-      text-align: center;
-      font-size: 0.8em;
       padding: 10px;
-      color: #999;
+      cursor: pointer;
     }
 
-    .logo {
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      padding: 10px 16px;
+    }
+
+    .card {
+      background-color: #fff;
+      padding: 16px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.02);
+      background-color: #f9f9f9;
+    }
+
+    .card .icon {
+      font-size: 20px;
+      margin-bottom: 8px;
+      color: #c8102e;
+    }
+
+    .highlight {
+      margin: 12px 16px;
+      background-color: #fff3f4;
+      border-left: 4px solid #d50032;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .footer-nav {
       display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
+      justify-content: space-around;
+      align-items: center;
+      background-color: #fff;
+      padding: 10px 0;
+      border-top: 1px solid #ddd;
     }
 
-    .logo img {
-      width: 60px;
+    .footer-nav i {
+      font-size: 18px;
+      color: #d50032;
+    }
+
+    .footer-nav span {
+      font-size: 12px;
+      display: block;
+      color: #444;
+    }
+
+    .footer-item {
+      text-align: center;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <div class="phone-frame">
-    <header>Bradesco</header>
+  <div class="phone">
 
-    <div class="menu">
-      <div class="logo">
-        <img src="https://th.bing.com/th/id/R.8dde52111aea7298f4406217f7f81f24?rik=hhpIhV68d%2bUesA&pid=ImgRaw&r=0" alt="Logo">
+    <!-- CABEÇALHO -->
+    <header>
+      <div class="header-top">
+        <div>Olá, Gabriel 👤</div>
+        <div><i class="fa-solid fa-bell"></i></div>
       </div>
+      <div class="saldo">
+        <span>Meu saldo disponível</span>
+        <span>R$ <span id="saldo">••••</span> 👁️</span>
+      </div>
+    </header>
 
-      <button onclick="location.href='simulador.html'">📤 Simular Pix</button>
-      <button onclick="location.href='verificador.html'">🔍 Verificar Comprovante</button>
-      <button onclick="alert('Em breve: consultar saldo!')">💰 Saldo</button>
-      <button onclick="alert('Em breve: extrato de transações!')">📄 Extrato</button>
-      <button onclick="alert('Em breve: configurações de conta!')">⚙️ Configurações</button>
+    <!-- BARRA DE PESQUISA -->
+    <div class="search-box">
+      <input type="text" placeholder="Fale com a BIA" />
+      <button><i class="fa-solid fa-microphone"></i></button>
     </div>
 
-    <div class="footer">Versão educacional - Projeto A3 Bradesco</div>
+    <!-- CARDS DE SERVIÇOS -->
+    <div class="grid">
+      <div class="card" onclick="location.href='simulador.html'">
+        <div class="icon"><i class="fa-solid fa-money-bill-transfer"></i></div>
+        Pix
+      </div>
+      <div class="card" onclick="location.href='verificador.html'">
+        <div class="icon"><i class="fa-solid fa-file-shield"></i></div>
+        Verificador
+      </div>
+      <div class="card" onclick="location.href='saldo.html'">
+        <div class="icon"><i class="fa-solid fa-wallet"></i></div>
+        Saldo
+      </div>
+      <div class="card" onclick="location.href='extrato.html'">
+        <div class="icon"><i class="fa-solid fa-receipt"></i></div>
+        Extrato
+      </div>
+      <div class="card" onclick="alert('Cartões em breve')">
+        <div class="icon"><i class="fa-solid fa-credit-card"></i></div>
+        Cartões
+      </div>
+      <div class="card" onclick="alert('Empréstimos em breve')">
+        <div class="icon"><i class="fa-solid fa-hand-holding-usd"></i></div>
+        Empréstimos
+      </div>
+    </div>
+
+    <!-- DESTAQUE -->
+    <div class="highlight">
+      💡 Open Finance Bradesco<br>
+      O melhor pra você
+    </div>
+
+    <!-- MENU INFERIOR FIXO -->
+    <div class="footer-nav">
+      <div class="footer-item" onclick="location.href='index.html'">
+        <i class="fa-solid fa-house"></i>
+        <span>Início</span>
+      </div>
+      <div class="footer-item" onclick="location.href='simulador.html'">
+        <i class="fa-solid fa-money-check-dollar"></i>
+        <span>Pix</span>
+      </div>
+      <div class="footer-item" onclick="location.href='extrato.html'">
+        <i class="fa-solid fa-receipt"></i>
+        <span>Extrato</span>
+      </div>
+      <div class="footer-item" onclick="alert('Mais serviços')">
+        <i class="fa-solid fa-ellipsis-h"></i>
+        <span>Mais</span>
+      </div>
+    </div>
+
   </div>
+
+  <!-- SCRIPT -->
+  <script>
+    const saldoElement = document.getElementById('saldo');
+    let saldoVisivel = false;
+
+    saldoElement.parentElement.addEventListener('click', () => {
+      saldoVisivel = !saldoVisivel;
+      saldoElement.textContent = saldoVisivel ? "2.345,67" : "••••";
+    });
+
+  </script>
 </body>
 </html>

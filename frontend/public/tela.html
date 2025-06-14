@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bradesco App</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .phone-frame {
+      width: 360px;
+      height: 640px;
+      border-radius: 30px;
+      background-color: white;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-bar {
+      background: linear-gradient(180deg, #c8102e, #a10e25);
+      color: white;
+      padding: 12px 16px;
+      font-size: 14px;
+    }
+
+    .top-bar .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .saldo-box {
+      background-color: #fff0f2;
+      padding: 16px;
+      color: #333;
+    }
+
+    .saldo-box h3 {
+      margin: 0;
+      color: #c8102e;
+      font-size: 14px;
+    }
+
+    .search-bar {
+      margin: 12px;
+      display: flex;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .search-bar input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+    }
+
+    .search-bar button {
+      background-color: #c8102e;
+      color: white;
+      border: none;
+      padding: 10px 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      padding: 12px;
+    }
+
+    .grid button {
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 16px 10px;
+      font-size: 14px;
+      text-align: center;
+      color: #c8102e;
+      cursor: pointer;
+    }
+
+    .grid button:hover {
+      background-color: #f9f9f9;
+    }
+
+    .bottom-box {
+      text-align: center;
+      padding: 10px;
+      font-size: 14px;
+      background-color: #fff;
+      border-top: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone-frame">
+    <div class="top-bar">
+      <div class="row">
+        <div><i class="fas fa-bars"></i></div>
+        <div>bradesco</div>
+        <div><i class="fas fa-comment"></i></div>
+      </div>
+      <div class="row" style="margin-top: 10px;">
+        <div>Olá, <strong id="usuario">Bianca</strong></div>
+        <div><i class="fas fa-user"></i></div>
+      </div>
+    </div>
+
+    <div class="saldo-box">
+      <h3>Meu saldo disponível</h3>
+      <p>R$ <span id="saldo">1.234,56</span> <i class="fas fa-eye"></i></p>
+    </div>
+
+    <div class="search-bar">
+      <input type="text" placeholder="Fale com a BIA" />
+      <button><i class="fas fa-microphone"></i></button>
+    </div>
+
+    <div class="grid">
+      <button>Meus Bancos</button>
+      <button>Open Finance</button>
+      <button>Transferências</button>
+      <button>Pagamentos</button>
+      <button>Cartões</button>
+      <button onclick="location.href='simulador.html'">Pix</button>
+      <button>Empréstimos</button>
+      <button>Investimentos</button>
+    </div>
+
+    <div class="bottom-box">
+      <strong>Mais serviços</strong> <i class="fas fa-chevron-up"></i>
+    </div>
+  </div>
+
+  <script>
+    // Simular nome e saldo
+    const nome = localStorage.getItem("usuario") || "Bianca";
+    document.getElementById("usuario").textContent = nome;
+  </script>
+</body>
+</html>

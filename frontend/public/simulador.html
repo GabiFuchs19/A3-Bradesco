@@ -1,86 +1,201 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Bradesco - Simulador de Transação Pix</title>
-
-  <!-- Bibliotecas -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/5.0.8/inputmask.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/cleave.js@1/dist/cleave.min.js"></script>
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-    body { margin: 0; font-family: Arial, sans-serif; background-color: #f8f8f8; }
-    header { background-color: #c8102e; color: white; padding: 16px; text-align: center; font-size: 1.5em; font-weight: bold; }
-    .navbar { display: flex; justify-content: space-around; background-color: #e6e6e6; padding: 10px; }
-    .navbar a { text-decoration: none; color: #333; font-weight: bold; }
-    .container { max-width: 500px; background: white; margin: 30px auto; padding: 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
-    .logo { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
-    .logo img { width: 40px; }
-    .logo span { font-size: 1.8em; font-weight: bold; }
-    label { display: block; margin-top: 12px; font-weight: bold; }
-    input, select { width: 100%; padding: 10px; margin-top: 4px; border: 1px solid #ccc; border-radius: 4px; }
-    .alert, .success { padding: 12px; margin-top: 20px; border-radius: 6px; display: none; }
-    .alert { background-color: #ffe5e5; border: 1px solid #ffcccc; color: #b20000; }
-    .success { background-color: #e0ffe5; border: 1px solid #b3ffcc; color: #007a33; }
-    .transfer-button { width: 100%; margin-top: 20px; background-color: #c8102e; color: white; padding: 12px; font-size: 1em; border: none; border-radius: 6px; cursor: pointer; }
-    .transfer-button:hover { background-color: #a10e25; }
-    .footer { text-align: center; font-size: 0.9em; color: #888; padding: 20px; }
+    * {
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background-color: #ccc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .phone {
+      width: 375px;
+      height: 812px;
+      background-color: #fff;
+      border-radius: 30px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    header {
+      background: linear-gradient(to right, #c8102e, #a10e25);
+      color: white;
+      padding: 16px;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .saldo {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .form-container {
+      flex: 1;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    label {
+      font-weight: bold;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    input, select {
+      padding: 10px;
+      font-size: 14px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+
+    input:focus, select:focus {
+      border-color: #c8102e;
+    }
+
+    button {
+      background-color: #d50032;
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #a10e25;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 12px;
+      background-color: #fff3f4;
+      border-left: 4px solid #d50032;
+      border-radius: 8px;
+      font-size: 14px;
+      min-height: 40px;
+    }
+
+    .footer-nav {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background-color: #fff;
+      padding: 10px 0;
+      border-top: 1px solid #ddd;
+    }
+
+    .footer-nav i {
+      font-size: 18px;
+      color: #d50032;
+    }
+
+    .footer-nav span {
+      font-size: 12px;
+      display: block;
+      color: #444;
+    }
+
+    .footer-item {
+      text-align: center;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
-  <header>Simulador de Transação Pix</header>
-  <nav class="navbar">
-    <a href="#">Início</a>
-    <a href="#">Pix</a>
-    <a href="#">Extrato</a>
-    <a href="#">Ajuda</a>
-  </nav>
+  <div class="phone">
 
-  <div class="container">
-    <div class="logo">
-      <img src="https://th.bing.com/th/id/R.8dde52111aea7298f4406217f7f81f24?rik=hhpIhV68d%2bUesA&pid=ImgRaw&r=0" alt="Logo genérica">
-      <span>bradesco</span>
+    <!-- CABEÇALHO -->
+    <header>
+      <div class="header-top">
+        <div>Olá, Gabriel 👤</div>
+        <div><i class="fa-solid fa-bell"></i></div>
+      </div>
+      <div class="saldo" id="saldoToggle">
+        <span>Meu saldo disponível</span>
+        <span>R$ <span id="saldo">••••</span> 👁️</span>
+      </div>
+    </header>
+
+    <!-- FORMULÁRIO DE SIMULAÇÃO PIX -->
+    <div class="form-container">
+      <label for="valor">Valor (R$):</label>
+      <input type="number" id="valor" placeholder="Ex: 150,00" min="0.01" step="0.01" />
+
+      <label for="chavePix">Chave Pix do Destinatário:</label>
+      <input type="text" id="chavePix" placeholder="Ex: email@exemplo.com" />
+
+      <label for="descricao">Descrição (opcional):</label>
+      <input type="text" id="descricao" placeholder="Ex: Pagamento de serviço" />
+
+      <button onclick="simularPix()">Simular Transação</button>
+
+      <div class="result" id="resultadoSimulacao"></div>
     </div>
 
-    <h2>Transferência via Pix</h2>
+    <!-- MENU INFERIOR FIXO -->
+    <div class="footer-nav">
+      <div class="footer-item" onclick="location.href='index.html'">
+        <i class="fa-solid fa-house"></i>
+        <span>Início</span>
+      </div>
+      <div class="footer-item" onclick="location.href='simulador.html'">
+        <i class="fa-solid fa-money-check-dollar"></i>
+        <span>Pix</span>
+      </div>
+      <div class="footer-item" onclick="alert('Extrato em breve')">
+        <i class="fa-solid fa-receipt"></i>
+        <span>Extrato</span>
+      </div>
+      <div class="footer-item" onclick="alert('Mais serviços')">
+        <i class="fa-solid fa-ellipsis-h"></i>
+        <span>Mais</span>
+      </div>
+    </div>
 
-    <label for="tipo-chave">Tipo de chave</label>
-    <select id="tipo-chave">
-      <option>CPF</option>
-      <option>E-mail</option>
-      <option>Telefone</option>
-      <option>Chave aleatória</option>
-    </select>
-
-    <label for="chave">Chave</label>
-    <input type="text" id="chave" placeholder="Digite a chave Pix">
-
-    <label for="nome">Nome</label>
-    <input type="text" id="nome" placeholder="Nome do destinatário">
-
-    <label for="instituicao">Instituição</label>
-    <input type="text" id="instituicao" placeholder="Nome do banco">
-
-    <label for="valor">Valor</label>
-    <input type="text" id="valor" placeholder="R$ 0,00">
-
-    <div id="alerta" class="alert"></div>
-    <div id="sucesso" class="success"></div>
-
-    <button class="transfer-button" onclick="verificarTransferencia()">Transferir</button>
-  </div>
-
-  <div class="footer">
-    Este é um simulador educacional. Nenhuma transação real é realizada.
   </div>
 
   <script>
     const tipoChave = document.getElementById("tipo-chave");
     const campoChave = document.getElementById("chave");
     const campoValor = document.getElementById("valor");
+    const saldoElement = document.getElementById('saldo');
+    let saldoVisivel = false;
+
+    saldoElement.parentElement.addEventListener('click', () => {
+      saldoVisivel = !saldoVisivel;
+      saldoElement.textContent = saldoVisivel ? "R$ 2.345,67 👁️" : "•••• 👁️";
+    });
 
     new Cleave('#valor', {
       numeral: true,
@@ -116,8 +231,6 @@
 
     async function verificarTransferencia() {
       const chave = campoChave.value.trim();
-      const nome = document.getElementById("nome").value.trim();
-      const instituicao = document.getElementById("instituicao").value.trim();
       const valorStr = campoValor.value.trim();
       const alerta = document.getElementById("alerta");
       const sucesso = document.getElementById("sucesso");
@@ -127,12 +240,11 @@
 
       const tipo = tipoChave.value;
 
-      if (!chave || !nome || !instituicao || !valorStr || valorStr === "R$ 0,00") {
+      if (!chave || !valorStr || valorStr === "R$ 0,00") {
         exibirErro("❌ Preencha todos os campos corretamente.");
         return;
       }
 
-      // Validações específicas
       if (tipo === "CPF" && !/^\d{11}$/.test(chave)) {
         exibirErro("❌ CPF inválido. Digite apenas 11 números.");
         return;
@@ -148,16 +260,7 @@
         return;
       }
 
-      if (/\d/.test(nome)) {
-        exibirErro("❌ O nome não pode conter números.");
-        return;
-      }
-
-      if (/\d/.test(instituicao)) {
-        exibirErro("❌ O nome da instituição não pode conter números.");
-        return;
-      }
-
+     
       const valorNumerico = parseFloat(valorStr.replace("R$ ", "").replace(/\./g, "").replace(",", "."));
       const dadosConcat = `${chave}|${nome}|${instituicao}|${valorStr}`;
       const hash = CryptoJS.SHA256(dadosConcat).toString();
@@ -229,5 +332,7 @@
       doc.save("comprovante_pix.pdf");
     }
   </script>
+
 </body>
 </html>
+

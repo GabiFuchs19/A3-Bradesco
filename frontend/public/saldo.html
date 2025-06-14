@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bradesco - Consulta de Saldo e Extrato</title>
+
+  <!-- Font Awesome para ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      margin: 0;
+      background-color: #ccc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .phone {
+      width: 375px;
+      height: 812px;
+      background-color: #fff;
+      border-radius: 30px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    header {
+      background: linear-gradient(to right, #c8102e, #a10e25);
+      color: white;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      user-select: none;
+      font-weight: 700;
+      font-size: 1.2em;
+      justify-content: center;
+    }
+
+    header img {
+      height: 32px;
+      width: auto;
+    }
+
+    main.content {
+      flex: 1;
+      padding: 16px 20px;
+      overflow-y: auto;
+    }
+
+    h2 {
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #222;
+      user-select: none;
+      font-size: 1.3em;
+    }
+
+    #saldo {
+      font-size: 2em;
+      font-weight: 700;
+      color: #007a33;
+      margin-bottom: 24px;
+      user-select: text;
+      text-align: center;
+    }
+
+    button {
+      width: 100%;
+      margin-bottom: 24px;
+      background-color: #c8102e;
+      color: white;
+      padding: 14px;
+      font-size: 1.1em;
+      border: none;
+      border-radius: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    button:hover {
+      background-color: #a10e25;
+    }
+
+    .extrato {
+      text-align: left;
+      width: 100%;
+      max-height: 300px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 12px;
+      background-color: #fff3f4;
+      user-select: text;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .transacao {
+      padding: 8px 6px;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.95em;
+    }
+    .transacao:last-child {
+      border-bottom: none;
+    }
+
+    .data {
+      color: #666;
+      font-weight: 600;
+      flex-basis: 110px;
+    }
+
+    .descricao {
+      flex-grow: 1;
+      padding-left: 10px;
+    }
+
+    .valor {
+      font-weight: 700;
+      min-width: 80px;
+      text-align: right;
+    }
+
+    .positivo {
+      color: #007a33;
+    }
+
+    .negativo {
+      color: #b20000;
+    }
+
+    /* Footer igual ao da tela anterior */
+    .footer-nav {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background-color: #fff;
+      padding: 10px 0;
+      border-top: 1px solid #ddd;
+      user-select: none;
+    }
+
+    .footer-nav i {
+      font-size: 18px;
+      color: #d50032;
+    }
+
+    .footer-nav span {
+      font-size: 12px;
+      display: block;
+      color: #444;
+    }
+
+    .footer-item {
+      text-align: center;
+      cursor: pointer;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="phone" role="main" aria-label="Consulta de saldo e extrato">
+
+    <header>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Bradesco_Logo.svg/64px-Bradesco_Logo.svg.png" alt="Logo Bradesco" />
+      <span>Consulta de Saldo e Extrato</span>
+    </header>
+
+    <main class="content">
+      <h2>Saldo Atual</h2>
+      <div id="saldo" aria-live="polite">R$ 0,00</div>
+
+      <button onclick="carregarSaldo()">Atualizar Saldo</button>
+
+      <h2>Extrato</h2>
+      <div id="extrato" class="extrato" aria-live="polite" aria-label="Lista de transações">
+        <p>Sem movimentações.</p>
+      </div>
+    </main>
+
+    <div class="footer-nav" role="navigation" aria-label="Menu principal">
+      <div class="footer-item" onclick="location.href='index.html'">
+        <i class="fa-solid fa-house"></i>
+        <span>Início</span>
+      </div>
+      <div class="footer-item" onclick="alert('Pix')">
+        <i class="fa-solid fa-money-check-dollar"></i>
+        <span>Pix</span>
+      </div>
+      <div class="footer-item" onclick="alert('Extrato')">
+        <i class="fa-solid fa-receipt"></i>
+        <span>Extrato</span>
+      </div>
+      <div class="footer-item" onclick="alert('Mais serviços')">
+        <i class="fa-solid fa-ellipsis-h"></i>
+        <span>Mais</span>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Simulação: dados de saldo e extrato
+    const dados = {
+      saldo: 1532.75,
+      transacoes: [
+        { data: "14/06/2025", descricao: "Pagamento Mercado", valor: -65.40 },
+        { data: "13/06/2025", descricao: "Pix Recebido", valor: 500.00 },
+        { data: "12/06/2025", descricao: "Transferência", valor: -120.00 },
+        { data: "11/06/2025", descricao: "Depósito", valor: 1500.00 },
+      ]
+    };
+
+    function carregarSaldo() {
+      const saldoDiv = document.getElementById('saldo');
+      const extratoDiv = document.getElementById('extrato');
+
+      // Atualiza saldo formatado
+      saldoDiv.textContent = `R$ ${dados.saldo.toFixed(2).replace('.', ',')}`;
+
+      // Limpa extrato
+      extratoDiv.innerHTML = '';
+
+      if(dados.transacoes.length === 0) {
+        extratoDiv.innerHTML = '<p>Sem movimentações.</p>';
+        return;
+      }
+
+      // Monta lista transações
+      dados.transacoes.forEach(t => {
+        const div = document.createElement('div');
+        div.classList.add('transacao');
+
+        const dataSpan = document.createElement('span');
+        dataSpan.classList.add('data');
+        dataSpan.textContent = t.data;
+
+        const descSpan = document.createElement('span');
+        descSpan.classList.add('descricao');
+        descSpan.textContent = t.descricao;
+
+        const valorSpan = document.createElement('span');
+        valorSpan.classList.add('valor');
+        valorSpan.textContent = (t.valor < 0 ? '- ' : '+ ') + `R$ ${Math.abs(t.valor).toFixed(2).replace('.', ',')}`;
+        valorSpan.classList.add(t.valor >= 0 ? 'positivo' : 'negativo');
+
+        div.appendChild(dataSpan);
+        div.appendChild(descSpan);
+        div.appendChild(valorSpan);
+
+        extratoDiv.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>

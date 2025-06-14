@@ -1,76 +1,187 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Bradesco</title>
+  <title>Bradesco - Login</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
   <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+
     body {
-      background-color: #f5f5f5;
-      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #ccc;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
     }
-    .login-container {
-      background: white;
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      text-align: center;
-      width: 300px;
+
+    .phone {
+      width: 375px;
+      height: 812px;
+      background-color: #fff;
+      border-radius: 30px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
-    .login-container img {
-      width: 80px;
-      margin-bottom: 1rem;
+
+    header {
+      background: linear-gradient(to right, #c8102e, #a10e25);
+      color: white;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.25rem;
+      user-select: none;
     }
-    .login-container h2 {
+
+    main {
+      flex-grow: 1;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #222;
+    }
+
+    main img {
+      width: 70px;
+      margin-bottom: 1.2rem;
+    }
+
+    main h2 {
       color: #d50032;
-      margin-bottom: 1rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      user-select: none;
     }
-    input {
+
+    input[type="text"], input[type="password"] {
       width: 100%;
-      padding: 0.5rem;
-      margin: 0.5rem 0;
+      padding: 12px 14px;
+      margin-bottom: 1rem;
       border: 1px solid #ccc;
-      border-radius: 5px;
+      border-radius: 12px;
+      font-size: 1rem;
+      user-select: text;
     }
+
     button {
       width: 100%;
-      padding: 0.7rem;
-      background-color: #d50032;
+      padding: 14px;
+      background-color: #c8102e;
       color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
       border: none;
-      border-radius: 5px;
+      border-radius: 12px;
       cursor: pointer;
-      font-weight: bold;
+      transition: background-color 0.3s ease;
+      user-select: none;
     }
+
     button:hover {
-      background-color: #b4002a;
+      background-color: #a10e25;
     }
-    .error {
-      color: red;
+
+    #erro {
+      color: #b20000;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+      min-height: 1.2rem;
+      user-select: text;
+      text-align: left;
+      width: 100%;
+    }
+
+    footer.footer {
+      text-align: center;
+      padding: 10px 0;
+      font-size: 0.8rem;
+      color: #666;
+      border-top: 1px solid #ddd;
+      user-select: none;
+    }
+
+    /* Rodapé fixo com ícones (igual outro exemplo) */
+    nav.footer-nav {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background-color: #fff;
+      padding: 10px 0;
+      border-top: 1px solid #ddd;
+      user-select: none;
+    }
+
+    nav.footer-nav .footer-item {
+      text-align: center;
+      cursor: pointer;
+      color: #d50032;
       font-size: 0.85rem;
+    }
+
+    nav.footer-nav .footer-item i {
+      font-size: 18px;
+      display: block;
+      margin-bottom: 4px;
     }
   </style>
 </head>
 <body>
-  <div class="login-container">
-    <img src="https://th.bing.com/th/id/R.8dde52111aea7298f4406217f7f81f24?rik=hhpIhV68d%2bUesA&pid=ImgRaw&r=0" alt="Logo genérica">
+  <div class="phone" role="main" aria-label="Login do usuário Bradesco">
+    <header>Bradesco</header>
 
-    <h2>Bradesco</h2>
-    <input type="text" id="usuario" placeholder="CPF ou Usuário" />
-    <input type="password" id="senha" placeholder="Senha" />
-    <div id="erro" class="error"></div>
-    <button onclick="login()">Entrar</button>
+    <main>
+      <img src="https://th.bing.com/th/id/R.8dde52111aea7298f4406217f7f81f24?rik=hhpIhV68d%2bUesA&pid=ImgRaw&r=0" alt="Logo genérica" />
+      <h2>Entrar</h2>
+
+      <input type="text" id="usuario" placeholder="CPF ou Usuário" autocomplete="username" />
+      <input type="password" id="senha" placeholder="Senha" autocomplete="current-password" />
+      <div id="erro"></div>
+
+      <button onclick="login()">Entrar</button>
+    </main>
+
+    <footer class="footer">Simulação educacional</footer>
+
+    <nav class="footer-nav" aria-label="Menu principal">
+      <div class="footer-item" onclick="location.href='index.html'">
+        <i class="fa-solid fa-house"></i>
+        Início
+      </div>
+      <div class="footer-item" onclick="location.href='simulador.html'">
+        <i class="fa-solid fa-money-check-dollar"></i>
+        Pix
+      </div>
+      <div class="footer-item" onclick="alert('Extrato')">
+        <i class="fa-solid fa-receipt"></i>
+        Extrato
+      </div>
+      <div class="footer-item" onclick="alert('Mais serviços')">
+        <i class="fa-solid fa-ellipsis-h"></i>
+        Mais
+      </div>
+    </nav>
   </div>
 
   <script>
     function login() {
-      const usuario = document.getElementById('usuario').value;
-      const senha = document.getElementById('senha').value;
+      const usuario = document.getElementById('usuario').value.trim();
+      const senha = document.getElementById('senha').value.trim();
       const erro = document.getElementById('erro');
+      erro.textContent = '';
 
       if (usuario === '' || senha === '') {
         erro.textContent = "Preencha todos os campos.";
@@ -78,7 +189,6 @@
       }
 
       // Aqui podemos colocar validação real futuramente
-      // Por enquanto, apenas redireciona se tiver algo digitado
       window.location.href = "simulador.html";
     }
   </script>
